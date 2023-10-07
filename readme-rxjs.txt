@@ -233,13 +233,43 @@ subject
 
 subject.asObservable().subscribe(val => do something); // gets the Observable
 
+PS: Late subscriber receives no before values.
+
 BehaviorSubject In Detail - When to Use it and Why?
 -----------------------------------------------------------
+PS: previous subscription values are not lost.
+Late subscriber receives the latest value unless after completion.
+
+const subject = new BehaviorSubject('0');
+
+0 is the initial value.
+
+AsyncSubject and ReplaySubject - Learn the Differences
+-----------------------------------------------------------
+AsyncSubject for long running calculations.
+PS: Emits the last value after completion.
+
+ReplaySubject
+Emits all the values from the beginning even for late subscribers.
+
+Store Service Design - What Subject to Use?
+-----------------------------------------------------------
+Practical use: Centralize store
+Store stores data centrally.
+
+BehaviorSubject Store - Example of a Data Modification Operation
+------------------------------------------------------------------------
+form.value -> gets all form values as JSON
+this.subject.getValue() gets the latest value from this Subject.
+
+Forcing the Completion of Long Running Observables - First and Take Operators
+---------------------------------------------------------------------------------
+first()
+  completes after its first value is emmited
+take(n)
+  completes after n number values are emmited
 
 
------------------------------------------------------------
------------------------------------------------------------
------------------------------------------------------------
 
 
 
