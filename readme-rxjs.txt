@@ -197,8 +197,11 @@ The debounce will always at the end emit the last value.
 Implementing a Custom RxJs Operator - the Debug Operator
 -----------------------------------------------------------
 
-
+Subjects and Stores - New Section Kickoff
 -----------------------------------------------------------
+Store Observable pattern
+
+
 -----------------------------------------------------------
 -----------------------------------------------------------
 
