@@ -269,6 +269,10 @@ first()
 take(n)
   completes after n number values are emmited
 
+The withLatestFrom RxJs Operator - Detailed Explanation
+---------------------------------------------------------------------------------
+withLatestFrom
+  combines multiple Observables
 
 
 
