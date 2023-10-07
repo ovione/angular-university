@@ -39,8 +39,12 @@ How to build your own Observable from scratch
 -----------------------------------------------------
 Learn How Observables Work Under the Hood, Build Your Own HTTP Observable
 
+  const obs:Oservable =
   Observable.create(observer => {
-    observer.next();
+
+    const value = does something;
+
+    observer.next(value);
     observer.error();
     observer.complete();
   }): Subscription
@@ -196,12 +200,44 @@ The debounce will always at the end emit the last value.
 
 Implementing a Custom RxJs Operator - the Debug Operator
 -----------------------------------------------------------
+Fork join
+-----------------------------------------------------------
 
 Subjects and Stores - New Section Kickoff
 -----------------------------------------------------------
 Store Observable pattern
 
+What are RxJs Subjects? A Simple Explanation
+-----------------------------------------------------------
+For multicasting
 
+  const obs:Oservable =
+  Observable.create(observer => {
+
+    const value = does something;
+
+    observer.next(value);
+    observer.error();
+    observer.complete();
+  }): Subscription
+
+A Subject is an Observable and a observer.
+
+const subject = new Subject();
+subject
+  .next
+  .error
+  .complete
+  .pipe
+
+
+subject.asObservable().subscribe(val => do something); // gets the Observable
+
+BehaviorSubject In Detail - When to Use it and Why?
+-----------------------------------------------------------
+
+
+-----------------------------------------------------------
 -----------------------------------------------------------
 -----------------------------------------------------------
 
