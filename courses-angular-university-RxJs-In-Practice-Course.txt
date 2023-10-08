@@ -13,7 +13,7 @@ How to
 -----------------------------------------------------
 1.  Define a stream.
     A definition of a stream is an Observable of a type.
-    An Observable is a lueprint for a stream.
+    An Observable is a blueprint for a stream.
 
     const interval$ = interval(1000);
 
