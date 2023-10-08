@@ -305,14 +305,19 @@ When the component as a async operations then to test we have to use the followi
   This notion is called the Zone.
   Zone is a context that detects async operations and does wait for them.
   The it is executed inside of a Zone.
+
   fakeAsync makes the test run inside a Zone.
+  tick(n) makes the clock of the Zone go forward n numbers of ms.
+  If we don't issue the tick() then there will be timeouts in the queue and the test will fail.
+  But n >= timeout
   
   it('', fakeAsync(() => {
       component does async call
       setTimeout(() => {
         asertions
-        done();
       }, timeout);
+
+      tick(n);
   }));
 
 Understanding Asynchronous Testing - a Simple Example VIP VIP
