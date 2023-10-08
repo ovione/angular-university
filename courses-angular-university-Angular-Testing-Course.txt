@@ -362,6 +362,7 @@ supports real http calls somthing that fakeAsyn does not support
 Angular (E2E) End to End Testing - Getting Started with Cypress: VIP VIP
 --------------------------------------------------------------------------------
 https://www.cypress.io/
+
 Unit tests are the describe it where we test a single unit like a component and a service.
 E2E tests multiple components together by simulating user interaction and make assertions.
 How everything fits together.
@@ -374,9 +375,25 @@ install cypress  to your work environment.
 
 Angular CLI Code Coverage and Deployment in Production Mode
 --------------------------------------------------------------------------------
+https://www.travis-ci.com/
+https://www.cypress.io/
 
-
-
+Code coverage
+  ng test --watch=false --code-coverage
+To see the result inbstall globally an http-server
+  npm install -g http-server
+To see the resul with the http-server
+  cd coverage
+  http-server -c-1
+Build the app for production in packaje.json with the new task
+  "build:prod": "ng build --prod"
+  npm run build:prod
+The result will be a dist folder containing our app for production
+Stop all your backends
+Start the application in prod mode with the http-server in package.json with the following task
+This task will be issued by the CI continuous integration service
+  "start:prod": "http-server ./dist -p 4200"
+The backend data will be given by cypress
 
 
 
