@@ -301,7 +301,7 @@ When the component as a async operations then to test we have to use the followi
   });
 }
 
-3. fakeAsync
+3. fakeAsync -> The best for async operations
   In: Understanding the Angular fakeAsync Testing Zone
   Will detect all async instructions in component and wait for them before continuing and then make assertions
   This notion is called the Zone.
@@ -328,6 +328,11 @@ When the component as a async operations then to test we have to use the followi
 
   }));
 
+  flushMicrotasks to flush promises
+
+4. async
+fixture.whenStable().subscribe() // This is another alternative
+
 Understanding Asynchronous Testing - a Simple Example VIP VIP
 Understanding the Angular fakeAsync Testing Zone VIP VIP
 --------------------------------------------------------------------------------
@@ -347,9 +352,10 @@ fakeAsync in Practice - Fixing the Home component tests
 --------------------------------------------------------------------------------
 conclusion
 
-
-
-
+Understanding the Angular async() Test Zone
+--------------------------------------------------------------------------------
+async
+fixture.whenStable().subscribe() // This is another alternative
 
 
 
