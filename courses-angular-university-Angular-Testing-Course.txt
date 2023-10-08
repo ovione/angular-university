@@ -191,6 +191,8 @@ this.fixture.detectChanges() // trigger double binding or change detection
 consts cards = el.queryAll(By.); // query the component dom
 
 VIP: async and then
+The beforeEach with the async() will wait for the TestBed.configureTestingModule.compileComponents().then()
+to finish to create the fixture, component and debugElement before the other beforEach and tests it can start.
 
     beforeEach(async(() => {
         TestBed.overrideComponent(
