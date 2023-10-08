@@ -5,23 +5,143 @@ ng test --no-watch // without hot reload
 
 expect(result).toBe(2, 'error message');
 
+// LogService
+{
+  log(): string {
+    return 'logged';
+  }
+}
+
+}
 // Service
 {
   constructor(private log Log) {}
 
   method() {
-    this.log.method();
+    this.log.log();
   }
 }
 
 //////////////////////// 1
 //  Spy a service
-const log = new Log();
-const logSpy = spyOn(log, 'method');
+const log = new LogService();
+spyOn(log, 'log');
+
+const service = new Service(log);
+service.method();
+
+expect(log.method).toHaveBeenCalled();
+
+//////////////////////// 2
+const logSpy: any = jasmine.createSpyObj('LogService', ['log']);
+logSpy.log.and.returnValue('hello');
 
 const service = new Service(logSpy);
 service.method();
+
 expect(logSpy.method).toHaveBeenCalled();
 
-//////////////////////// 2
+//////////////////////// 3
+// HttpClientTestingModule inject HttpClient mock so that backend calls are not made.
+// httpTestingController has assertions.
+// httpTestingController returns test data
+
+let service: Service;
+
+TestBed.configureTestingModule({
+    imports: [ HttpClientTestingModule ],
+    providers: [Service,
+                {provide: LogService, useValue: logSpy}
+               ]
+});
+
+this.httpClient = TestBed.inject(HttpClient);
+this.httpTestingController = TestBed.inject(HttpTestingController);
+this.service = TestBed.inject(serviceType);
+
+//////////////////////// 4
+
+Angular HTTP Service Testing - Step-by-Step Implementation
+-------------------------------------------------------------------
+VIP httpTestingController api
+How to write test data for http
+How to return test data via the httpTestingController
+Object.values(COURSES): Array<any>
+
+skeleton of http test VIP
+------------------------------
+
+service.method().subscribe(obj) {
+  verify data returned
+  expect(ObjectReturned).toEqual(obj);
+}
+
+verify url                req = httpTestingController.expectOne(url);
+verify method type        expect(req.request.method).toEqual('GET');
+flush with data returned  req.flush(ObjectReturned);
+
+
+Example with Utility classes made by Ovione
+
+COURSES:any = {
+  12: {
+    id: 12,
+    titles: {
+      name: '',
+      descr: '',
+    },
+    editor: ''
+  },
+  13: {
+    id: 13,
+    titles: {
+      name: '',
+      descr: '',
+    },
+    editor: ''
+  }
+}
+
+ServiceSpecUtil
+        serviceTest.getService().getSnapshots(reportId, country).subscribe({ // called when flush is called
+            next: (returnedObj: Snapshot[]) =>{ serviceTest.verifyHttpCallSuccess(returnedObj, expectedObjectReturnedFlushed); }
+        });
+
+        verifyHttpExpectations(serviceTest, `private/report/${reportId}/snapshots?country=${country}`, 'GET', expectedObjectReturnedFlushed);
+
+    export function verifyHttpExpectations(serviceTest: ServiceSpecUtil<any>,
+                                           expectedUrl: string,
+                                           expectedMethod: string,
+                                           expectedObjectReturnedFlushed: any,
+                                           opts?: {
+                                               status?: number;
+                                               statusText?: string;
+                                           }) {
+        serviceTest.verifyUrl(expectedUrl, 'should expect right url call');
+        serviceTest.verifyMethod(expectedMethod, `should be a ${expectedMethod} call`);
+        serviceTest.flush(expectedObjectReturnedFlushed, opts);
+    }
+
+    // verify the correct url called
+    verifyUrl(expectedUrl: string, description?: string) {
+        this.req = this.httpTestingController.expectOne(expectedUrl, description);
+    }
+
+    // verify the correct method type called: POST, PUT and so on
+    verifyMethod(method: string, description?: string) {
+        expect(this.req.request.method).toEqual(method, description);
+    }
+
+    //  return object when http request made
+    flush(expectedObjectReturnedFlushed: any,
+          opts?: {
+            status?: number;
+            statusText?: string;
+    }) {
+        this.req.flush(expectedObjectReturnedFlushed, opts);
+    }
+
+VIP: When flush on the req is called then the subscribe will be triggered.
+
+
 
