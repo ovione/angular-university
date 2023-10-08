@@ -76,10 +76,10 @@ service.method().subscribe(obj) {
   expect(ObjectReturned).toEqual(obj);
 }
 
-verify url                req = httpTestingController.expectOne(url);
-verify method type        expect(req.request.method).toEqual('GET');
-flush with data returned  req.flush(ObjectReturned);
-
+verify url                                            req = httpTestingController.expectOne(url);
+verify method type                                    expect(req.request.method).toEqual('GET');
+flush with data returned, the subscribe gets fired    req.flush(ObjectReturned);
+verify no other http reqs being made                  httpTestingController.verify()
 
 Example with Utility classes made by Ovione
 
@@ -139,6 +139,10 @@ ServiceSpecUtil
             statusText?: string;
     }) {
         this.req.flush(expectedObjectReturnedFlushed, opts);
+    }
+
+    verifyNoOutstandingRequests() {
+        this.httpTestingController.verify();
     }
 
 VIP: When flush on the req is called then the subscribe will be triggered.
