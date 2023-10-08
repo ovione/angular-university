@@ -337,3 +337,28 @@ Testing Promised-based code - Introduction to Microtasks about promises
 promises execute before timeouts in the same Zone
 microtasks are promises are exceuted before macrotasks
 macrotasks are setTimeout, setInterval and http calls
+
+fakeAsync() Zone
+flushMicrotasks() makes the execution the microtasks
+
+Using fakeAsync to test Asynchronous Observables
+--------------------------------------------------------------------------------
+fakeAsync in Practice - Fixing the Home component tests
+--------------------------------------------------------------------------------
+conclusion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
