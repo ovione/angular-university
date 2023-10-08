@@ -5,7 +5,7 @@ Stream of values are emited by:
   2.  time: intervals, timeouts
   3.  backend requests
 
-Typically a strem is solved by having a callback.
+Typically a stream is solved by having a callback.
 RxJS Solves:
   when combining streams it solves the callback hell or nested streams.
 
