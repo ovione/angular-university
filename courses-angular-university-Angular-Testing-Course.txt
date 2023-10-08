@@ -287,7 +287,7 @@ When the component as a async operations then to test we have to use the followi
     asertions
   }, 10);
 
-2. done callback
+2. done callback // This type of test is very risky because its difficult to know how long the timeout should be.
   done callback is called to notify the end of the it test
 
   it('', (done: DoneFn) => {
@@ -295,11 +295,12 @@ When the component as a async operations then to test we have to use the followi
       setTimeout(() => {
         asertions
         done();
-      }, 10);
+      }, timeout);
   });
 }
 
 3.
 
 Understanding Asynchronous Testing - a Simple Example VIP VIP
+Understanding the Angular fakeAsync Testing Zone VIP VIP
 ----------------------------------------------------------------
