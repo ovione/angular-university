@@ -359,6 +359,23 @@ async
 fixture.whenStable().subscribe() // This is another alternative
 supports real http calls somthing that fakeAsyn does not support
 
+Angular (E2E) End to End Testing - Getting Started with Cypress: VIP VIP
+--------------------------------------------------------------------------------
+https://www.cypress.io/
+Unit tests are the describe it where we test a single unit like a component and a service.
+E2E tests multiple components together by simulating user interaction and make assertions.
+How everything fits together.
+The complete components and services.
+
+Cypress provides E2E testing.
+Its not an angular tool but for testing every web application.
+
+install cypress  to your work environment.
+
+Angular CLI Code Coverage and Deployment in Production Mode
+--------------------------------------------------------------------------------
+
+
 
 
 
