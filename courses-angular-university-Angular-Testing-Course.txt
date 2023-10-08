@@ -299,7 +299,21 @@ When the component as a async operations then to test we have to use the followi
   });
 }
 
-3.
+3. fakeAsync
+  In: Understanding the Angular fakeAsync Testing Zone
+  Will detect all async instructions in component and wait for them before continuing and then make assertions
+  This notion is called the Zone.
+  Zone is a context that detects async operations and does wait for them.
+  The it is executed inside of a Zone.
+  fakeAsync makes the test run inside a Zone.
+  
+  it('', fakeAsync(() => {
+      component does async call
+      setTimeout(() => {
+        asertions
+        done();
+      }, timeout);
+  }));
 
 Understanding Asynchronous Testing - a Simple Example VIP VIP
 Understanding the Angular fakeAsync Testing Zone VIP VIP
