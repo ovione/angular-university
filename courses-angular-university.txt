@@ -1,6 +1,6 @@
 RxJs In Practice Course 4.5                                     ----->  done
 Reactive Angular Course 5.5                                     ----->  2
-Angular Testing Course 5                                        ----->  1
+Angular Testing Course 5                                        ----->  done
 Angular Advanced Library Laboratory: Build Your Own Library 6.5 ----->  3
 Angular Material In Depth 6.5                                   ----->
 ----------------------- 28
