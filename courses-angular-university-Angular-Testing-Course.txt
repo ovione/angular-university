@@ -372,8 +372,12 @@ Cypress provides E2E testing.
 Its not an angular tool but for testing every web application.
 
 install cypress  to your work environment.
+In package.json the following tasks will be installed:
 
-Angular CLI Code Coverage and Deployment in Production Mode
+cypress:open
+cypress:run
+
+Angular CLI Code Coverage and Deployment in Production Mode VIP
 --------------------------------------------------------------------------------
 https://www.travis-ci.com/
 https://www.cypress.io/
@@ -395,6 +399,22 @@ This task will be issued by the CI continuous integration service
   "start:prod": "http-server ./dist -p 4200"
 The backend data will be given by cypress
 
+Running Cypress E2E Tests using Travis CI¨VIP
+--------------------------------------------------------------------------------
+package.json tasks needed:
+  cypress:run
+  build:prod
+  start:prod
+
+Put your code on github
+Link travis to your github project after logging in to your travis.
+
+In your repo you will have a .travis.yml to configure travis.
+From this yml file you can run the package.json task
+  npm run e2e
+Next is to trigger the build from travis
+  manually
+  every commit to your github repo
 
 
 
