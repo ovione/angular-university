@@ -149,9 +149,19 @@ VIP: When flush on the req is called then the subscribe will be triggered.
 
 
 Testing Angular HTTP Data Modification Services
------------------------------------------------------------
+
 req to inspect the body parts with expect(req.request.body.anypropery).toEqual(somevalue);
 merge two objects object and create a new object
 newObject = {
     ...obj, ...objWithSomePropertiesOfObjModified
 }
+
+Angular HTTP Services - Testing Error Handling
+-----------------------------------------------------------
+service.subscribe() {
+ () => fail(),
+ (error) => {
+  expect errorStatus
+ }
+}
+req.flush('why req failed', {status: 500, statusText: 'bla bla'})
