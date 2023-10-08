@@ -5,6 +5,9 @@ ng test --no-watch // without hot reload
 
 expect(result).toBe(2, 'error message');
 
+Services
+============================
+
 // LogService
 {
   log(): string {
@@ -165,3 +168,138 @@ service.subscribe() {
  }
 }
 req.flush('why req failed', {status: 500, statusText: 'bla bla'})
+
+Angular HTTP Testing - Checking HTTP Request Parameters
+-----------------------------------------------------------
+req = this.httpTestingController.expectOne(req => req.url === 'helloWorld');
+expect(req.request.params.get('courseId')).toEqual(12);
+expect(req.request.params.get('name')).toEqual('ovione');
+or
+req = this.httpTestingController.expectOne('helloWorld?courseId=12&name=ovione')
+
+Components
+============================
+fixture: ComponentFixture<T>: Is an utility type to obtain an instance of the component, debug, detectChanges that triggers change detection and so on.
+el:DebugElement: to query the dom = fixture.debuElement();
+
+this.fixture = TestBed.createComponent(componentType);
+this.component = this.fixture.componentInstance;
+this.el: debugElement = this.fixture.debugElement();
+
+this.component set values
+this.fixture.detectChanges() // trigger double binding or change detection
+consts cards = el.queryAll(By.); // query the component dom
+
+VIP: async and then
+
+    beforeEach(async(() => {
+        TestBed.overrideComponent(
+            ObligationActionsComponent,
+            {
+                set: {
+                    providers: [
+                        { provide: ObligationActionsHelperService, useValue: obligationActionsHelperServiceSpy }
+                    ]
+                }
+            }
+        );
+
+        TestBed.configureTestingModule({
+            declarations: [ ObligationActionsComponent ],
+            providers: [
+                { provide: TemplateComunicatorService, useValue: templateComunicatorServiceSpy },
+                { provide: TemplateStorageService, useValue: templateStorageService },
+                { provide: TemplateDisableService, useValue: templateDisableServiceSpy },
+                { provide: UxAppShellService, useValue: uxAppShellServiceSpy },
+                { provide: ObligationActionsService, useValue: obligationActionsServiceSpy },
+            ],
+            schemas: [NO_ERRORS_SCHEMA,CUSTOM_ELEMENTS_SCHEMA]
+        })
+        .compileComponents().
+        then(() => {
+          this.fixture = TestBed.createComponent(componentType);
+          this.component = this.fixture.componentInstance;
+          this.el: debugElement = this.fixture.debugElement();
+          if(detectChanges) {
+              this.fixture.detectChanges();
+          }
+        });
+    })));
+
+the then() is better that this
+    beforeEach(() => {
+        TestBed.configureTestingModule({;
+    });
+
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ObligationActionsComponent);
+        component = fixture.componentInstance;
+    });
+
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
+
+Angular Component Testing - DOM Interaction
+-------------------------------------------------------
+set component values and then
+fixture.detectChanges
+to trigger double binding
+
+
+Angular Test Debugging - How to Trigger Change Detection?
+----------------------------------------------------------------
+sync
+This is synchronous VIP Presentation components for components that gets their data from Inputs: @Input, setters and so on.
+Its also sync when subscribing but when the subscriber is mocked as a jasmine Spy it will return inmediately.
+For example
+   serviceSpy.method.and.returnValue(of(returnedValue)) // this will return immediately
+
+fixture.detectChanges() after updating the component
+How to print the dom of the component. VIP VIP VIP
+
+el.nativeElement: Gives the native Dom of the component
+
+console.log(el.nativeElement.outerHtml) prints the dom of the component
+
+Testing Angular Smart or Container Components - Test Setup
+----------------------------------------------------------------
+async: subscriptions and async pipes
+smart component: gets data from service subscriptions async and uses worker components
+NoopAnimationModule
+
+*ngIf="result | async"
+
+Introduction to Asynchronous Angular Testing - Understanding Jasmine done()
+------------------------------------------------------------------------------------
+async operations
+----------------------
+setTimeOut, setInterval to call callbacks
+Some material components
+http calls
+
+When the component as a async operations then to test we have to use the following techniques:
+
+1.setTimeout // not correct becauseb it test finished before assertions
+ it('', () => {
+  component does async call
+  setTimeout(() => {
+    asertions
+  }, 10);
+
+2. done callback
+  done callback is called to notify the end of the it test
+
+  it('', (done: DoneFn) => {
+      component does async call
+      setTimeout(() => {
+        asertions
+        done();
+      }, 10);
+  });
+}
+
+3.
+
+Understanding Asynchronous Testing - a Simple Example VIP VIP
+----------------------------------------------------------------
