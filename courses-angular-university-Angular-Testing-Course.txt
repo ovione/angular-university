@@ -216,7 +216,7 @@ VIP: async and then
             schemas: [NO_ERRORS_SCHEMA,CUSTOM_ELEMENTS_SCHEMA]
         })
         .compileComponents().
-        then(() => {
+        then(() => { -> async is helpful here necause it will make this beforeEach is ending after this then is finished
           this.fixture = TestBed.createComponent(componentType);
           this.component = this.fixture.componentInstance;
           this.el: debugElement = this.fixture.debugElement();
