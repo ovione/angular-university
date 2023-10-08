@@ -4,3 +4,24 @@ ng test // with hot reload
 ng test --no-watch // without hot reload
 
 expect(result).toBe(2, 'error message');
+
+// Service
+{
+  constructor(private log Log) {}
+
+  method() {
+    this.log.method();
+  }
+}
+
+//////////////////////// 1
+//  Spy a service
+const log = new Log();
+const logSpy = spyOn(log, 'method');
+
+const service = new Service(logSpy);
+service.method();
+expect(logSpy.method).toHaveBeenCalled();
+
+//////////////////////// 2
+
