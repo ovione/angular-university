@@ -1,0 +1,657 @@
+Angular university
+Course: Angular Security Course - Web Security Fundamentals
+--------------------------------------------------------------------
+client side in angular
+server side in node
+
+1.	from: start -> client side angular
+	until: User Sign Up Server-Side Implementation in Express
+
+	frontend (signup screen, loggedin user,isloggedin, is loggedou as observable), backend (db and plain password)
+
+2. 	digest = password transformed with a (hash + salt iterated) = digest and store it in the db (user, digest) -> server side
+	A user stores the password as a criptographic hash function that stores the password has a digest using the hash function, salt and nr of iterations.
+	The next time the user logs in the criptographic hash function is re run and compare with the digest of the password.
+	That way if the user steels the digest he can not reverse it to re-create the pawword from it.
+
+	from: Introduction To Cryptographic Hashes - A Running Demo
+	until: Using the Argon 2 Hashing Function In Our Sign Up Backend Service
+	password stored as criptographic hash function
+	password stored in db as a hash function using a CHF or chriptographic function.
+	CHF generates for different string a different hash and never the same for different strings. They are irreversible.
+	Node has the crypto module. sha256 is the name of a hashing function.
+	To verify password: receive a password, hash it and compare to hash stored in the database.
+
+	from: Learn Offline Dictionary Attacks - Why Use Cryptographic Salting?
+	from: Password Key Derivation Functions and The Node Crypto Module
+
+	Dictionary attach
+	-------------------------
+		Hash: from password create a unique hash.
+		Hash is stored in db. 
+		1. This hash database table is stolen.
+		2. From google get the most common passwords
+		3. Hacker then creates a dictionary of (password, hash)
+		   common password, hash, hashfunction name i.e sha256
+		4. If there is a hash that matches the list then the password will be known.
+
+		Solution
+		--------- 
+			1.	Hash the hash itself multiple times.
+			2.  Add to the password a slat unique to each user. Then hash it.
+
+		Conclusion
+		----------------
+			password should be stored in a hashed + salt form.
+			Then when user enters a password verify that it is correct by comparing the entered password hashed + salt to the hashed + salt value stored in the db. (username, hash+salt)
+			For thet use a PBKDF Password-Based Key Derivation Function that uses a password + salt and generate a hash and iterate a number of times to generate a digest hash based and 
+			store it in the db.
+			node has a function to generate a random salt and a PBKDF function that takes the password, salt, the number of iterations and the algorithm and the length of the key.
+
+3. 	from -> server side
+		Using the Argon 2 Hashing Function In Our Sign Up Backend Service
+		How To Implement a Password Policy
+	server side implementation of hash + password, validatrion policy (lenght, upercase, lowercase and so on), how to display the errors of the password validation policy
+	owasp
+	https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+	Password Policy is restricions on the password like(length, uppercase, lowercase, alphanumeric and so on)
+
+
+4. from -> client side angular
+	Displaying Client-Side Password Validation Errors - What's Next ? ---> errors display in angular
+	We can have a password policy in the front end used only to make the user experience better but the same must be done at server side to ensure real security.
+
+5. from  -> server side
+	Switch Branches And User Session Management Section Introduction.
+	When the user signup or signin for the first time the server gives a session id with an expiration date that the user will resend for every http request.
+	Never resend the password over and over because it can be stolen.
+	This can be done in a stateful and stateless manner.
+
+6.  from -> server side
+	Node Util Promisify - How to Convert Callback Based APIs to Promise-based
+	Introduction To Node Async Await - Creating a User Session Id
+	creates a sessionId
+	This is server side the server creates a session Id.
+	await calls a promised based function and converts it as synchronous but it needs to be called inside an async function.
+
+	async function m() {
+		const synchVar = await methodPromisedBased();
+
+		use the synchVar.
+	}
+
+	otherwise without async and await it would be
+
+	function m() {
+		methodPromisedBased().then(()=> {
+			const synchVar = await 
+			use the synchVar.
+		});
+	}
+
+7.  from -> server side
+	Modeling a User Session - Classes Or Interfaces?
+	creates a Sesssion class (sessionId, user, validUntil)
+8.  from -> server side
+	Browser Cookies - How To Use Them For User Session Management
+	create a singleton sessionStore were we store the Sesssion class
+
+	Link the http request of the user to the sessionId in the sessionStore
+	{
+		sessionId = (user, validUntil)
+	}
+
+    We attach the sessionId to a response a cookie:
+		res.cookie("SESSIONID", sessionId);
+		res.status(200).json({id: user.id, email: user.email});
+	This cookie will be sent back to the server in every next http request.
+	That is the standard cookie functionality.
+
+9. 	from (VIP)
+	Attack Scenario - User Identity Theft Attack Using A Third-Party Server -> server side
+   	How To Better Protect The Session Id Using HTTP Only Cookies -> client side
+
+VIP Attack Scenario: CROSS SIDE SCRIPTING attack
+
+	User: Use cookie to store the session id to resend it in all http requests.
+	Attacker: steal the cookie with the sessionId and impersonate the user
+
+	1. 	steal the SESSIONID
+		via cross side scripting to inject javascript and get the cookie SESSIONID value and send it to an attack server.
+		For example
+		inkect programatically in the page an image with a sessionId in the path.
+		<img src='http//ip of attack server/SESSIONID/{sessionId value}'
+		Now the server will receive this stolen sessionId.
+
+	2. 	use the SESSIONID
+		The attacker will go to the application input screen where he is not signed in.
+
+		If he stole the value of the cookie sessionId he can open a browser console and write:
+			document.cookie =  "SESSIONID={sessionId value}"
+		and like that he can introduce the cookie and impersonate the user.
+		If he goes with this sessionId the server will think its the user as the client but its the attacker.
+
+VIP	To defend from this attack -> server side
+		Mark as cookie as http only.
+		res.cookie("SESSIONID", "{sessionId value}", {
+			httpOnly: true
+		});
+	Now you can not access via javascript: 
+		document.cookie will not list our cookie.
+
+10.	from (VIP)
+	HTTPS Secure Cookies - Running the Angular CLI in HTTPS Mode
+	Attack Scenario: network attack or man in the middle attack.
+	Cafe and all network transit is sniffed on.
+	If traffic is http based this attack is possible.
+
+	VIP	To defend from this attack -> server side
+		Mark as cookie as secure, that means the cookie can only to be sent over https and nothttp.
+		res.cookie("SESSIONID", "{sessionId value}", { (VIP)
+			httpOnly: true,
+			secure: true
+		});
+		For that the angular: -> client side
+		We should go to a https server
+		proxy.json
+			"/api": {
+				"target": "https://localhost:9000"
+			}
+		package.json
+			start in https mode with 'npm start' with extra options at minute 3:00 in this video.
+		in the browser now we have to access the angular server like: https://localhost:4200
+
+11. from -> (client side, server side) (VIP)
+	Client-Side User Session Management - Retrieve User Data From Session
+
+	client side
+
+		AuthService  
+			contains the observables 
+			VIP: Observable.filter
+			constuctor() {
+				http.getUser
+					gets the authenticated user and broadcast the authenticated user if its not null else broadcast the ANONYMOUS user meaning the user is not yet authenticated. 
+			}
+
+	server side
+
+		get sessionId
+			const sessionId = req.cookies['SESSIONID'];
+			const user = SessionStore.findUSerBySessionId(sessionId); // return user or undefined
+			If  (user) { res.status(200).json(user)}
+			else { res.status(204)} 204 = request was succesfully proccessed but no content found by server
+
+12.	from
+	An Ancient Vulnerability - JSON Hijacking, Securing a REST Endpoint -> (server side)
+
+VIP When returning a json array never return the array but return an object.
+	Attack Scenario: json hijacking attack
+	inject in the array constructor malicious code. Fixed in most browser
+	solution: give back always an object.
+	so instead of res.status(200).json([lessons]) do this instead res.status(200).json({lessons: [lessons]})
+
+	When we get any data from the server side that method:
+
+	1. 	get session id from cookie
+	2. 	session store is session valid
+		if invalid send 403 forbidden and automatically an empty response body.
+		else send 200 with the data
+
+	For user expirience min 8:50 in this video
+		*ngIf="isLoggedIn$ | async"
+	For security in data in case a user accesses the url directly the server has to check if the sessionId is valid
+
+13. from -> (client side, server side)
+	Implementing Logout - Destroying The User Session
+	
+	client side
+	http.logout post with an empty method. shareReply to avoid duplicate http posts
+	server side
+	sessionStore.destroy(sessionId)
+	delete this.sessions[sessionId] This deletes the property opf this object
+	res.clearCookie(SESSIONID) Only the server can clear the cookie. Instructs the clienbt browser to delete this cookie.
+	res.status(200);
+
+14. from -> (client side, server side)
+	User Login - Step-by-Step Implementation
+
+	The user must exist on the server
+	send (user.email, password)
+
+	client side
+	http and if successful redirect to root
+	server side
+	Compute the digest of the password and compare with the digest stored in the db.
+	minute 4 of this video
+	1. get the (user.email, password) from the request
+	2. user: dbUser(id, email, passwordDigest) = db.findUserByEmail
+		if no user send 403 forbidden
+		if user email and password are valid
+			argon2.verify(passwordDigest, password)
+			This function will compare the passwordDigest with a calculated digest of the login password
+			The calculated digest algorithm of the login password will take the salt, number of iterations and so on from the passwordDigest that was stored in the db.
+			create a sessionId and store it in the sessionStore (sessionId, userDb) where userDb(user.email, passwordDigest)
+			create a cookie: res.cookie('SESSIONID', sessionId, {httpOnly: true, secure: true})
+			return the user: res.status(200).json({id: user.id, email: user.email})
+		else send 403 forbidden
+
+15.	from
+	JSON Web Tokens - Section Introduction
+	Stateless
+	JWT
+	Authentication is not done by the application but by an external service like off0.
+
+16. from
+	Creating Your First JWT - What Does It Look Like?
+	JWT generation
+	require jsonwebtoken
+	with jsonwebtoken library
+		const secret-key = 'secret-key';
+		const payload = {name: 'Alice'}
+		const jwt = jwt.sign(payload, secret-key, {algorithm: 'HS256'})
+17.	from
+	JSON Web Tokens In a Nutshell
+	jwt.io
+	JSON web token allows to send a claim (data) between two parties in a way that the receiving party
+	can verify that it was sent by who they think it was sent.
+
+18.	from
+	JSON Web Tokens In Detail - The Header and the Payload
+	https://www.base64decode.org/
+	jwt is 3 things encoded in base 64 and not encrypted
+	jwt = header, payload, signature
+	signature is to verify that the payload was not tampered with and that the jwt is valid.
+	The jwt token verification does not need a 3rd party to verify it. 
+
+19. from
+	JWT Signature With HS256 - How Does It Work? Learn What is an HMAC Code
+	JWT Signature With RS256 - Learn The Advantages Compared to HS256
+	Creating a JWT User Session - Setting Subject and Expiration
+
+	https://angular-university.io/lesson/jwt-signature-with-rs256
+	jwt.io: site to see the contents of a jwt.
+	jwt generation using the algorith hs256 (default)
+	generated with a secret key.
+
+
+	HS256:  needs a secret key shared between sender and receiver
+			Downside 
+				Both sender and receiver can create the jwt.
+				is that the secret key must be updated in all the receivers
+				if one receiver is stolen all the secret keys fall.
+	RS256:  uses public key cryptography and solves the HS256 secret key problems
+			sender owns a private key and publishes to the world its public key for receivers to validate its jwts.
+			The only one that can generate a jwt is the sender with its private-key and everybody else can verify the jwt.
+
+	HS256 (secret key)
+		jwt = require('jsonwebtoken');
+		sign
+			jwtGenerated = jwt.sign(payload, secret-key, {algorithm HS256, expiresIn, subject});
+			jwtGenerated = (algorith, payload, verification hash)
+		verify
+			payload = jwt.verify(jwtGenerated, secret-key);
+
+	RS256 (public key, private key)
+		jwt = require('jsonwebtoken');
+
+		sign
+			private-key = read from key store
+			jwtGenerated = jwt.sign(payload, private-key, {algorithm RS256, expiresIn, subject} );
+			jwtGenerated = (algorith, payload, verification hash)
+		verify
+			public-key = read from key store
+			payload = jwt.verify(jwtGenerated, public-key);
+
+	PS: expiresIn in case the webtoken is reissued, to avoid it can be used forever
+	3rd party owns private key and generate jwt for authentication
+	All apps receiving jwts have the public key to verify the validity of the jwt.
+
+20.	from
+	User Sign Up With JWT - Learn How To Combine Cookies and JWTs
+
+	Angular implementation
+	reading keys in application
+
+	To generate keys in development environment https://travistidwell.com/jsencrypt/demo/
+	Or use openssl command line
+
+	When signup 
+		The server creates the jwt with the user id and puts it in a Session cookie (httpOnly (not accessible via javascript)and secure(only accessible via https)) and returns it to the application.
+		From then on the cookie with the jwt token will be resent and the application needs too verify the jwt for authentication.
+
+21. from
+	JWT-Based User Identification Via a Custom Express Middleware
+	Retrieve User Info From JWT With Express Middleware - Error Handling With Async Await
+	Express User Identification Middleware - Implementation Finished
+	Backend JWT-based Security Using an Express Middleware
+    JWT-based Authentication - Section Conclusion and What's Next
+
+	Express implementation
+
+	retrieve the cookie in an express middleware
+	const jwt = req.cookies[SESSIONID];
+	after verification extract the subject or userId from the cookie and put it in the request so that subsequent routes can access this userId.
+
+VIP	in express you can add a middleware to a route like a guard in angular
+
+	in the protected route if the userId is not present then send a 403 forbidden without body in order
+
+	when we login
+	if user id and passsword correct we create a jwt and send it back to the user in the SESSIONID cookie.
+
+	the signup, login and signout can be delegated to a 3rd party system like off0.
+
+22. from
+	Understanding CSRF - Step-by-Step Attack Simulation
+	CSRF In Detail - Understanding Attack Limitations
+	How To Defend Our Application Against CSRF - Client And Server Defenses
+
+	CSRF CROSS SITE REQUEST FORGERY or XSRF
+
+	VIP Attack Scenario: CROSS SITE REQUEST FORGERY
+	Using cookies makes it vulnerable to this attack
+		description
+			click a link and the SESSIONID cookie is sent to the attacker (to the domain of the attacker).
+			cookies are always added to a request made to any server.
+			Then the attacket autosubmits from that attacker page to your app using your SESSIONID cookie.
+			Or via a link execute a GET. 
+			Thats why never perform db operations via GETs.
+			POST can logout a useror send parameters. It can not get a json back.
+
+		solution
+			defense called: the double submit cookie CSRF defense
+			server
+				server generates a CSRF token when creating a sessionId
+				send the CSRF token to the client in a CSRF cookie
+			client
+				the client should send the CSRF token as a header for eaxmple as x-xsrf-token.
+				the x prefix means that its a custom header.
+				The attacker could never create a header.
+			server
+				will verify the CSRF token by comparing the cookie and the header where this token is.
+VIP			In angular implement this solution via the HttpClientXsrfModule that reads the XSRF cookie and insert the XSRF header.
+			In express server via a middleware.
+			If cookie and header are not equal the return a 403 status.
+
+23:	from
+	Auth0 Section Introduction - Using JWTs to Delegate Authentication To 3rd Party
+	How To Setup an Auth0 Hosted Login Page
+	Integrating a 3rd Party Authentication Provider - Auth0
+	Setting Up an Auth0 Externally Hosted Login Page
+	How does Auth0 Authentication Work? Logging In a User
+	Receiving The Auth0 JWT at Application Startup with parseHash
+	Adapting the UI To the User Login Status
+	Angular HTTP Interceptor - Build an Authentication Interceptor
+	JWT Authentication with express-jwt and JSON Web Key Set - Backend Design
+	Auth0 JWT-based Authentication - Backend Implementation
+	User Sign Up - Requesting Permission to Use Users Email
+	User Signup and User Preferences - Frontend Implementation
+	User Signup and User Profile - Server-Side Implementation
+	Section Summary - The Main Benefit of JWTs
+
+	Using Auth0 that has a lot of libraries that are MIT licensed and examples how to use security
+	Signup and login is delegated to Auth0 that uses jwt
+
+	Implementation of angular using the Auth0.
+	when we login Auth0 we receive a jwt.
+	we store the jwt in LocalStorage 
+	send the jwt to the server for each request in a header via the http auth.interceptor.
+		request.clone()
+	backend implementation
+		express-jwt is an Auth0 library
+
+	subject = BeaviorSubject(undefined);
+	subject.asObservable().pipe(filter(user => !!user));
+
+24.	from
+	RBAC Role-Based Authorization - Section Introduction
+
+	RBAC = Role Based Access Control or role based security
+	https://en.wikipedia.org/wiki/Role-based_access_control
+	User has Roles has Permissions
+
+25.	from
+	Setting Up The RBAC Solution - Adding Roles to our JWT
+
+	Roles should be in the jwt payload.
+
+	Backend
+		Login route build the jwt.
+
+26.	from
+	Angular RBAC Authorization - Solution Overview
+	Backend Express Authorization Route - Design Overview
+	Backend Express Authorization Route - Implementation and Demo
+	The Admin Login As User Backend Service 								(front end implamentation)
+	UI RBAC Authorization With The rbacAllow Structural Directive 			(front end implamentation of structural directive)
+	The rbacAllow Structural Directive - Final Implementation and Demo 		(front end implamentation of structural directive)
+	Authorization Router Guard - Initial Implementation 					(front end implamentation of guard)
+	Authorization Router Guard Completed - Configuring a Factory Provider	(front end implamentation of guard)
+
+	architectural solution
+
+	Backend
+		middleware to check if user is authorized based on user routes.
+		This middleware is added to the routes that need authorization.
+		If not allowed send status 403 forbidden without a body.
+	Frontend
+		AuthService
+			receives the user and broadcasts it to the application and to isLoggedIn
+		Structural directive 
+			to check roles like *ngIf called *rbacAllow
+			<element *rbacAllow="['ROLE1', 'ROLE2']">content</element>
+		Guard
+			CanActivate interface
+			configuration using a factory provider
+			if not allowed the redirect to home screen
+
+27.	from
+	Conclusion and Key Takeaways
+
+
+
+Functionality until here (VIP)
+===========================================================================================
+
+VIP Attack Scenario
+	1.	CROSS SIDE SCRIPTING
+		description
+			steal the sessionId and reuse it
+		solution
+			cookie inly available through javascrirpt
+			httpOnly: true
+	2.	network attack or man in the middle attack
+		description
+			sniff the network
+		solution
+			only send cookie though http
+			secure: true
+	3. 	json hijacking attack
+		description
+			inject in the array constructor malicious code. Fixed in most browser
+		solution
+			give back always an object.
+	4.	CROSS SITE REQUEST FORGERY
+		description
+			Using cookies makes it vulnerable to this attack
+			click a link and the SESSIONID cookie is sent to the attacker (to the domain of the attacker).
+			cookies are always added to a request made to any server.
+			Then the attacket autosubmits from that attacker page to your app using your SESSIONID cookie.
+			Or via a link execute a GET. 
+VIP			Thats why never perform db operations via GETs.
+			Thats why never perform db operations via GETs.
+			POST can logout a useror send parameters. It can not get a json back.
+		solution
+			defense called: the double submit cookie CSRF defense
+			server
+				server generates a CSRF token when creating a sessionId
+				send the CSRF token to the client in a CSRF cookie
+			client
+				the client should send the CSRF token as a header for eaxmple as x-xsrf-token.
+				the x prefix means that its a custom header.
+				The attacker could never create a header.
+			server
+				will verify the CSRF token by comparing the cookie and the header where this token is.
+VIP			In angular implement this solution via the HttpClientXsrfModule that reads the XSRF cookie and insert the XSRF header.
+			In express server via a middleware. If cookie and header are not equal the return a 403 status.
+
+User Authentication - Signup and create a new user
+Use cookie to store session id
+---------------------------------------------------------------
+Authentication: Stateful
+======================================================
+signup we create a digest and sessionId
+Login we compare password to digest and we create the sessionId
+sessionId put in cookie for subsequent comunications
+logout delete the cookie containing the sessionId
+the cookie will contain the {httpOnly: true, secure: true}
+	httpOnly: not accessible via javascript
+	secure: only sent via https
+
+Signup
+=======
+Client
+	Signup -> send user  (email, password)
+server side receives the requests (email, password)
+	store use.id + digest in db
+		generates the digest based on the password and stores it in the db (user.email, digest) Introduction To Node Async Await - Creating a User Session Id
+	creates a sessionId and stores it in siongleton SessionStore in memory:
+		creates a sessionId and creates a Session class (sessionId, user.email, validUntil)a dn stores it in the singleton in memory SessionStore Map {sessionId, Session class}
+	response to client browser -> setCookie header contains the SESSIONID=sessionId.
+Client
+	receives the cookie and now will resend the cookie on every subsequent http request.
+
+Get any data from the server
+==================================
+	Server side
+	1. 	method that gives back the data
+	2. 	get session id from cookie
+	3. 	session store is session valid
+		if invalid send 403 forbidden and automatically an empty response body.
+		else send 200 with the data
+
+	For user experience min 8:50 in this video *ngIf="isLoggedIn$ | async"
+	For security in data in case a user accesses the url directly the server has to check if the sessionId is valid
+
+Logout
+==================================
+	client side
+	http.logout post with an empty method. shareReply to avoid duplicate http posts
+	server side
+	sessionStore.destroy(sessionId)
+	delete this.sessions[sessionId] This deletes the property of this object
+	res.clearCookie(SESSIONID) Only the server can clear the cookie. Instructs the clienbt browser to delete this cookie.
+	res.status(200);
+
+Login
+==================================
+	The user must exist on the server
+	send (user.email, password)
+
+	client side
+	http and if successful redirect to root
+	server side
+	Compute the digest of the password and compare with the digest stored in the db.
+	minute 4 of this video
+	1. get the (user.email, password) from the request
+	2. user: dbUser(id, email, passwordDigest) = db.findUserByEmail
+		if no user send 403 forbidden
+		if user email and password are valid
+			argon2.verify(passwordDigest, password)
+			This function will compare the passwordDigest with a calculated digest of the login password
+			The calculated digest algorithm of the login password will take the salt, number of iterations and so on from the passwordDigest that was stored in the db.
+			create a sessionId and store it in the sessionStore (sessionId, userDb) where userDb(user.email, passwordDigest)
+			create a cookie: res.cookie('SESSIONID', sessionId, {httpOnly: true, secure: true})
+			return the user: res.status(200).json({id: user.id, email: user.email})
+		else send 403 forbidden
+
+Authentication: Stateful JWT
+======================================================
+	JWT used for Authentication
+	JWT Signature With HS256 - How Does It Work? Learn What is an HMAC Code
+	JWT Signature With RS256 - Learn The Advantages Compared to HS256
+	https://angular-university.io/lesson/jwt-signature-with-rs256
+	jwt.io
+	jwt generation using the algorith hs256 (default)
+	generated with a secret key.
+	We don't need a session store
+
+	HS256:  needs a secret key shared between sender and receiver
+			Downside 
+				Both sender and receiver can create the jwt.
+				is that the secret key must be updated in all the receivers
+				if one receiver is stolen all the secret keys fall.
+	RS256:  uses public key cryptography and solves the HS256 secret key problems
+			sender owns a private key and publishes to the world its public key for receivers to validate its jwts.
+			The only one that can generate a jwt is the sender with its private-key and everybody else can verify the jwt.
+
+	HS256 (secret key)
+		jwt = require('jsonwebtoken');
+		sign
+			jwtGenerated = jwt.sign(payload, secret-key, {algorithm HS256, expiresIn, subject});
+			jwtGenerated = (algorith, payload, verification hash)
+		verify
+			payload = jwt.verify(jwtGenerated, secret-key);
+
+	RS256 (public key, private key)
+		jwt = require('jsonwebtoken');
+
+		sign
+			private-key = read from key store
+			jwtGenerated = jwt.sign(payload, private-key, {algorithm RS256, expiresIn, subject} );
+			jwtGenerated = (algorith, payload, verification hash)
+		verify
+			public-key = read from key store
+			payload = jwt.verify(jwtGenerated, public-key);
+
+	PS: expiresIn in case the webtoken is reissued, to avoid it can be used forever
+	3rd party owns private key and generate jwt for authentication
+	All apps receiving jwts have the public key to verify the validity of the jwt.
+
+	1. 	When signup 
+		The server creates the jwt with the user id and puts it in a Session cookie (httpOnly (not accessible via javascript)and secure(only accessible via https)) and returns it to the application.
+		From then everytime the client accesses the app it will send this cookie to the server where the jwt will be verified.
+
+	2. 	When accesssing a url in thee server we need to authenticate
+		retrieve the cookie in an express middleware
+		const jwt = req.cookies[SESSIONID];
+		after verification extract the subject or userId from the cookie and put it in the request so that subsequent routes can access this userId.
+
+	VIP	in express you can add a middleware to a route like a guard in angular
+
+		in the protected route if the userId is not present then send a 403 forbidden without body in order
+
+	3. 	when login
+		if user id and passsword correct we create a jwt and send it back to the user in the SESSIONID cookie. 
+		password digest and so on still goes on.
+		the signup, login and signout can be delegated to a 3rd party system like off0.
+
+Authorization
+======================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
