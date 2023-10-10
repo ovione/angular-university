@@ -13,8 +13,19 @@ What does it mean to build an application in a reactive style ?
         })
     }
   })
-2.reactive style
-Folow the design patterns and avoid CallBack hell.
+
+2.Reactive style
+  Folow the design patterns and avoid CallBack hell.
+
+  The Reactive style component does not know where the data is coming from.
+  It uses a reactive service to retrieve the data.
+  The data is not a mutable variable but an Observable.
+  The data is pushed to the view by the Observable and is consumed by the html with the async pipe.
+  If we want to modify the data we can use the multiple rxJs operators inside a pipe.
+  Code is flat without deep level of nesting.
+
+  The Imperative Style component knew from where the data was comming from via the http.
+  The data was stored in a mutable variable.
 
 html
   <div *ngFor="let data of (data$ | async)" >
@@ -60,7 +71,7 @@ A Reactive Service is a service that has methods that return Observables().
 Design Pattern 2
 ------------------------------
 Components passes data to the view as Observables.
-All data from the components are Observables.
+All data from the components are Observables and not mutable variables.
 
 Design Pattern 3
 ------------------------------
