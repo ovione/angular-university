@@ -1,2 +1,95 @@
-What is a reactive style application
+What does it mean to build an application in a reactive style ?
+
+1.traditional Imperative Style
+  https://callbackhell.com/
+  sub1(()=> {
+    if(bolean) {
+        sub2(()=> {
+           do something;
+        })
+    } else {
+        sub3(()=> {
+           do something;
+        })
+    }
+  })
+2.reactive style
+Folow the design patterns and avoid CallBack hell.
+
+html
+  <div *ngFor="let data of (data$ | async)" >
+  </div>
+
+Component {
+  data$: Observable<Data[]>;
+
+  constructor(private service: Service) {}
+
+  ngOnInt() {
+    data$ = service.method()
+  }
+}
+
+Service {
+  constructor(private http: Http) {}
+
+  method(): Observable<Data[]> {
+    http.get<Data[]>('uri').
+    pipe(
+      map(this.someMappingFunc())
+    );
+  }
+
+  private someMappingFunc(res): Data[] {
+    return res['payload'];
+  }
+}
+
+JSON returned by http:
+{
+  payload: [
+    Data1, Data2, ... DataN
+  ]
+}
+
+Design Pattern 1
+------------------------------
+Create a stateless service to help the component.
+A Reactive Service is a service that has methods that return Observables().
+
+Design Pattern 2
+------------------------------
+Components passes data to the view as Observables.
+All data from the components are Observables.
+
+Design Pattern 3
+------------------------------
+Use the async pipe.
+The async pipe will subscribe to the Observable.
+When the component is destroyed the async pipe will unsubscribe the subscription to prevent memory leaks.
+
+Design Pattern 4
+------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
