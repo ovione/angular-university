@@ -123,6 +123,48 @@ Smart Components vs Presentational Components
 Smart Components: Apply logic to prepare the data and uses the Presentational Components.
 Presentational Components:  Only displays without any other logic.
 
+Design Pattern 6 VIP
+------------------------------
+Data Modification Example in Reactive Style (Stateless Application)
+Component dialog where the form is displayed closes itself after save and emits an event.
+The smart Component after save event received will reload itself nand its backend Observables.
+
+SmartComponent
+  get data via Http
+  when it receives an event from the Dispaly Component it reloads from backend and new Observables get subscribed again in html.
+Dispaly Component
+  shows list and
+  open dialog component
+  when it receives an event from the Dialog Component only if it contains data saved rxJs filter() it will emit an event
+  so that the Smart Component reloads
+Dialog component
+  save and closes itself and emits value returned from save
+  close and emits without value
+
+Component() {
+  @Input() course: Coourse;
+  form: ;
+
+  constructor(private service: Service) {}
+
+  ngOnInit() {
+    this.form = buildForm;
+  }
+
+  save() {
+    service.save(this.course.id, this.form.value).subscribe({
+      next: (returned: any) =>
+    });
+  }
+}
+
+Service {
+  constructor(private http: Http) {}
+
+  save(id: string, data: Partial(Data)): Observable<any> {
+    return http.put(`/api/courses/${id}`, data);
+  }
+}
 
 
 
