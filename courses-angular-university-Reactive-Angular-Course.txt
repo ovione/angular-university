@@ -132,6 +132,7 @@ The smart Component after save event received will reload itself nand its backen
 SmartComponent
   get data via Http
   when it receives an event from the Dispaly Component it reloads from backend and new Observables get subscribed again in html.
+  Should show a loader while saving.
 Dispaly Component
   shows list and
   open dialog component
@@ -166,10 +167,17 @@ Service {
   }
 }
 
+Design Pattern 7
+------------------------------
+Reactive Component Interaction - Section Introduction
+@Input() if one component is present in the template of another template.
+Loading Component
+
+Structure of home app in: Reactive Component Interaction - Section Introduction: min 2:22
 
 
-
-
+Design Pattern 8
+------------------------------
 
 
 
