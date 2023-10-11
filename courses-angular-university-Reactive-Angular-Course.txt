@@ -175,7 +175,39 @@ Loading Component
 
 Structure of home app in: Reactive Component Interaction - Section Introduction: min 2:22
 
+Loading Service Reactive API Design
 
+LoadingService {
+  private loadingSubject: BeaviorSubject<boolean>(false); // remembers last value. Any new Subs will receive the last value.
+  loading$: Observable<boolean> = this.loadingSubject.asObservable();
+
+  showLoaderUntilCompleted<T>(Obs: Observable<T>): Observable<T> {
+
+  }
+
+  logginOn() {
+    this.loadingSubject.next(true);
+  }
+
+  logginOff() {
+    this.loadingSubject.next(false);
+  }
+}
+
+Component that shows the loader
+  *ngIf="loadingService.loading$ | async"
+
+Component that turns component on|off
+
+  load() {
+    this.logginService.logginOn();
+    sub.method()
+    .pipe(
+      finalize(() => this.logginService.logginOff()) // VIP finalize called when call is successful or errors out
+    )
+    .subscribe(() => )
+  }
+  
 Design Pattern 8
 ------------------------------
 
