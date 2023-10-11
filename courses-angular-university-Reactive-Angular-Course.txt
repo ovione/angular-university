@@ -1,5 +1,31 @@
 What does it mean to build an application in a reactive style ?
 
+=================================================================================
+Imperative Style
+  code focuses on writing an explicit sequence of commands to describe how you want the computer to do things
+
+  const double = (numbers: number[]) => {
+    cont doubled: number[] = [];
+
+    for(let i=0, i<numbers.length, i++) {
+      doubled.push(numbers[i]*2);
+    }
+
+    return doubled;
+  }
+
+  console.log(double([1, 2, 3));
+  result: [2, 4, 6]
+
+Declarative Style
+  code focuses on specifying the result of what you want.
+
+  const double = (numbers: number[]) => numbers.map(n => n*2);
+
+  console.log(double([1, 2, 3));
+  result: [2, 4, 6]
+=================================================================================
+
 1.traditional Imperative Style
   https://callbackhell.com/
   sub1(()=> {
@@ -92,9 +118,10 @@ Avoiding Angular duplicate HTTP requests with the RxJs shareReplay operator
 
 Design Pattern 5
 ------------------------------
+Smart Components vs Presentational Components
 
-
-
+Smart Components: Apply logic to prepare the data and uses the Presentational Components.
+Presentational Components:  Only displays without any other logic.
 
 
 
