@@ -81,6 +81,44 @@ When the component is destroyed the async pipe will unsubscribe the subscription
 
 Design Pattern 4
 ------------------------------
+Avoiding Angular duplicate HTTP requests with the RxJs shareReplay operator
+
+  service.method.subscribe
+  .pipe(
+    map(),
+    shareReplay()
+  )
+  .(() => {})
+
+Design Pattern 5
+------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
