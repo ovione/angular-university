@@ -181,8 +181,12 @@ LoadingService {
   private loadingSubject: BeaviorSubject<boolean>(false); // remembers last value. Any new Subs will receive the last value.
   loading$: Observable<boolean> = this.loadingSubject.asObservable();
 
-  showLoaderUntilCompleted<T>(Obs: Observable<T>): Observable<T> {
-
+  showLoaderUntilCompleted<T>(obs: Observable<T>): Observable<T> {
+    return of(null).pipe(
+      tap(() => this.logginOn())
+      conactMap(() => obs)
+      finalize(() => this.logginOff())
+    );
   }
 
   logginOn() {
@@ -207,7 +211,18 @@ Component that turns component on|off
     )
     .subscribe(() => )
   }
-  
+
+  or less invasive VIP
+
+    load() {
+      sub = sub.method();
+      const loadCourses = this.logginService.showLoaderUntilCompleted(sub);
+
+      loadCourses.subscribe(() => )
+    }
+
+Understanding the Angular Component providers property
+
 Design Pattern 8
 ------------------------------
 
