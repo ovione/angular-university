@@ -169,7 +169,11 @@ Service {
 
 Design Pattern 7
 ------------------------------
+Via a Service like for the logging indicator and error messages
+
 Reactive Component Interaction - Section Introduction
+Understanding the Angular Component providers property
+------------------------------------------------------------------------------------------------------
 @Input() if one component is present in the template of another template.
 Loading Component
 
@@ -221,7 +225,10 @@ Component that turns component on|off
       loadCourses.subscribe(() => )
     }
 
-Understanding the Angular Component providers property
+Error Handling and the Messages Component
+------------------------------------------------------------------------------------------------------
+
+
 
 Design Pattern 8
 ------------------------------
