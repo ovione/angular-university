@@ -225,13 +225,80 @@ Component that turns component on|off
       loadCourses.subscribe(() => )
     }
 
-Error Handling and the Messages Component
-------------------------------------------------------------------------------------------------------
+Messages Service - Implementation Finished and Demo
+----------------------------------------------------------
+
+messages-service.ts
+service {
+
+private subject = new BehaviorSubject<string[]>([]);
+errors$: Obesrevable<string[]> = subject.asObservable().pipe(
+filer((messsages: string[]) => messages && messages.length > 0)
+);
+
+showErrors(...errors[]) {
+subject.next(errors);
+}
+}
+
+messages-component.ts
+
+<ng-container *ngIf="errors$ | async as errors"> VIP
+<div *ngIf="showMessages">
+<div *ngFor="let error of errors" >
+ {{error}}
+</div>
+</div>
+</ng-container>
+
+MessagesComponent {
+errors$: Observable<string[];
+showMessages = false;
+
+constructor(messagesService: MessagesService) {}
+
+ngOnInit() {
+errors$ = this.messagesService.pipe(
+tap(() => this.showMessages = true)
+);
+}
+
+onClose() {
+this.showMessages = true;
+}
+}
 
 
+Usage:
 
-Design Pattern 8
-------------------------------
+constructor(messagesService: MessagesService) {}
+
+aService.method().pipe(
+catchError(errors=> {
+this.messagesService.showErrors(errors);
+
+return throwError(errors);
+})
+);
+
+Example how to throw error from json server.
+res.status(500).json({message: 'error ocurred'});
+
+Step-by-Step Implementation of an Angular Store Service VIP VIP VIP
+-------------------------------------------------------------
+Store with a subject = BehaviorSubject.
+subject.gatValue() gives the last emited value of the BehaviorSubject.
+
+Master-Detail UI Pattern - Section Introduction
+-------------------------------------------------------------
+
+Angular Master Detail Implementation - The Master Table
+-------------------------------------------------------------
+http way to add params
+
+http.get<T>(url, { params : {
+params1: someparamValue
+}})
 
 
 
