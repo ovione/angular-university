@@ -9,4 +9,4 @@ Angular Advanced Library Laboratory: Build Your Own Library     6 hrs 42 mins
   https://angular-university.io/course/angular-advanced-course
 Angular Material In Depth                                       6 hrs 30 mins
 https://angular-university.io/course/angular-material-course
------------------------ 28
+----------------------- 28 hrs 12 mins
