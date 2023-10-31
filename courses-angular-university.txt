@@ -1,12 +1,12 @@
 Questions: helpdesk@angular-university.io
-RxJs In Practice Course 4.5                                     ----->  done
+RxJs In Practice Course                                         4 hrs 30 mins
   https://angular-university.io/course/rxjs-course
-Reactive Angular Course 5.5                                     ----->  2
+Reactive Angular Course                                         5 hrs 30 mins
   https://angular-university.io/course/reactive-angular-course
-Angular Testing Course 5                                        ----->  done
+Angular Testing Course                                          5 hrs
   https://angular-university.io/course/angular-testing-course
-Angular Advanced Library Laboratory: Build Your Own Library 6.5 ----->
+Angular Advanced Library Laboratory: Build Your Own Library     6 hrs 42 mins
   https://angular-university.io/course/angular-advanced-course
-Angular Material In Depth 6.5                                   ----->
+Angular Material In Depth                                       6 hrs 30 mins
 https://angular-university.io/course/angular-material-course
 ----------------------- 28
