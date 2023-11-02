@@ -18,7 +18,7 @@ Imperative Style
   result: [2, 4, 6]
 
 Declarative Style
-  code focuses on specifying the result of what you want.
+  code focuses on specifying the result of what you want instead of How to do it.
 
   const double = (numbers: number[]) => numbers.map(n => n*2);
 
@@ -310,43 +310,72 @@ http.get<T>(url, { params : {
 params1: someparamValue
 }})
 
+reactive-master-detail-final-demo
+-------------------------------------------------------------
+youtube video in iframe.
 
+pipe safeUrl to mark a url as safe.
 
+reactive-consolidation-exercise
+-------------------------------------------------------------
+get param from router.
+shareReplay()
 
+Reactive style
+1.  Have Observable member variable instead of plain member variable.
+2.
 
+Example with nested ng-container tags to instantiate the course and lessons
+<ng-container *ngIf="(course$ | async) as course">
+  <ng-container *ngIf="(lessons$ | async) as lessons">
+    course?.description
+    <div *ngFor="let lesson of lessons">
+      lesson.description
+    </div>
+  </ng-container>
+</ng-container>
 
+ngOnInit() {
+  course$ = service.getCourses();
+  lessons$ = service.getLessons();
+}
 
+reactive-course-component-finished
+-------------------------------------------------------------
+Single Data Observable Pattern
 
+To avoid the nested ng-container  and initial delay to display data (blanco page) to the user
+we have the Single Data Observable Pattern.
 
+Single Data Observable Pattern
+-------------------------------------
+course$ and lessons$ into one single Observable data$.
 
+interface CourseData {
+  course: Course;
+  lessons: Lessons[];
+}
 
+data$: Observable<CourseData>;
 
+<ng-container *ngIf="(data$ | async) as data"> // one ng-container tag
+    data.course?.description
+    <div *ngFor="let lesson of data.lessons">
+      lesson.description
+    </div>
+</ng-container>
 
+ngOnInit() {
+  const course$ = service.getCourses();
+  const lessons$ = service.getLessons();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  this.data$ = combineLatest([course$, lessons$])
+  pipe(
+    map(([course, lessons]) => {
+      return {
+        course: course,
+        lessons: lessons
+      }
+    })
+  );
+}
