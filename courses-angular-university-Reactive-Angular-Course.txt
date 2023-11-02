@@ -322,8 +322,8 @@ get param from router.
 shareReplay()
 
 Reactive style
+
 1.  Have Observable member variable instead of plain member variable.
-2.
 
 Example with nested ng-container tags to instantiate the course and lessons
 <ng-container *ngIf="(course$ | async) as course">
@@ -348,6 +348,7 @@ To avoid the nested ng-container  and initial delay to display data (blanco page
 we have the Single Data Observable Pattern.
 
 Single Data Observable Pattern
+reactive-single-data-observable-pattern-default-data-values VIP VIP VIP
 -------------------------------------
 course$ and lessons$ into one single Observable data$.
 
@@ -366,8 +367,12 @@ data$: Observable<CourseData>;
 </ng-container>
 
 ngOnInit() {
-  const course$ = service.getCourses();
-  const lessons$ = service.getLessons();
+  const course$ = service.getCourses().pipe(startsWith(null)); // startsWith emits null and don't wait for the first value so returning inmediately
+  const lessons$ = service.getLessons().pipe(startsWith([]]));
+
+  //  combineLatest waits to emit its combined Observable when all the Observables have emited.
+  //  from then on it emits its combined Observable when each of the Observables emits separately.
+  //  That is why we used startsWith so that combineLatest emits immediately.
 
   this.data$ = combineLatest([course$, lessons$])
   pipe(
@@ -376,6 +381,8 @@ ngOnInit() {
         course: course,
         lessons: lessons
       }
-    })
+    }),
+    tap(console.log)
   );
 }
+
