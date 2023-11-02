@@ -294,6 +294,16 @@ Master-Detail UI Pattern - Section Introduction
 
 Angular Master Detail Implementation - The Master Table
 -------------------------------------------------------------
+A table list that when we click on a row we open the row details.
+
+<ng-container *ngIf="!selectedRow; else detail">
+  list with rows
+</ng-container>
+
+<ng-template #detail>
+  detail
+</bg-template>
+
 http way to add params
 
 http.get<T>(url, { params : {
