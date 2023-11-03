@@ -89,6 +89,10 @@ JSON returned by http:
   ]
 }
 
+3.Reactive style
+Observable member variables where the app does not subscribe manually but with the async pipe.
+The async pipe takes care of the destruction of subscription when component is destroyed.
+
 Design Pattern 1
 ------------------------------
 Create a stateless service to help the component.
@@ -325,6 +329,9 @@ Reactive style
 
 1.  Have Observable member variable instead of plain member variable.
 
+Observable member variables where the app does not subscribe manually but with the async pipe.
+The async pipe takes care of the destruction of subscription when component is destroyed.
+
 Example with nested ng-container tags to instantiate the course and lessons
 <ng-container *ngIf="(course$ | async) as course">
   <ng-container *ngIf="(lessons$ | async) as lessons">
@@ -342,7 +349,7 @@ ngOnInit() {
 
 reactive-course-component-finished
 -------------------------------------------------------------
-Single Data Observable Pattern
+Single Data Observable Pattern: When page has multiple Observables
 
 To avoid the nested ng-container  and initial delay to display data (blanco page) to the user
 we have the Single Data Observable Pattern.
