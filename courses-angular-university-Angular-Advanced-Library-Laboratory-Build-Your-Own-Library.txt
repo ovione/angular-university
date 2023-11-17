@@ -88,6 +88,47 @@ red-theme.scss
   <div class="container theme-red">
   </div>
 
+Creating an Alternative Component Theme, See the CLI SaaS Support In Action
+======================================================================================
+use scss
+
+Angular Style Isolation - Emulated View Encapsulation - Learn How It Works
+======================================================================================
+Explains how angular simulates shadow dom with attributes _ngcontent0
+
+Emulate ViewEncpsulation is the agular default but can be overriden
+
+Learn 2 More Alternative Ways of Handling CSS in Angular Applications
+======================================================================================
+Explains the other encapsulation, the
+Native shadow dom encapsuation in the chrome browser
+None
+
+======================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
