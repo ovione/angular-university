@@ -98,11 +98,12 @@ Explains how angular simulates shadow dom with attributes _ngcontent0
 
 Emulate ViewEncpsulation is the agular default but can be overriden
 
-Learn 2 More Alternative Ways of Handling CSS in Angular Applications
+Learn 2 More Alternative Ways of Handling CSS in Angular Applications (For the future)
 ======================================================================================
 Explains the other encapsulation, the
 Native shadow dom encapsuation in the chrome browser
 None
+
 
 ======================================================================================
 
