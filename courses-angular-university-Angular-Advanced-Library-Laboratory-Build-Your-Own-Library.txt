@@ -4,7 +4,7 @@ Course: Angular Advanced Library Laboratory: Build Your Own Library
 
 Understanding ng-content and Style Isolation - Learn The Deep Style Modifier
 ======================================================================================
-How to style components that are projected into a template from inside the template itself.
+How to style components that are content projected into a template from inside the template itself.
 
 app.component.html
 
