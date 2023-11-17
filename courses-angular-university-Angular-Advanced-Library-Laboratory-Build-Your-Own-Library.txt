@@ -21,3 +21,46 @@ template.component.scss
 host /deep/ input {
   // this will be applied to the app.component.html input
 }
+
+The ContentChild Decorator, How Does It Work ? Component Design Best Practices
+======================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
