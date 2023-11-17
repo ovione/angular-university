@@ -6,16 +6,21 @@ Understanding ng-content and Style Isolation - Learn The Deep Style Modifier
 ======================================================================================
 How to style components that are content projected into a template from inside the template itself.
 
+app-component
+--------------------------------------------------
+selector: app-component
 app.component.html
 
-<template-component>
-  <input>
-</template-component>
-
+<div class="container">
+  <template-component>
+    <input #input>
+  </template-component>
+</div>
 template-component
 --------------------------------------------------
 selector: template-component
 template.component.html
+  <ng-content></ng-content>
 
 template.component.scss
 host /deep/ input {
@@ -23,7 +28,65 @@ host /deep/ input {
 }
 
 The ContentChild Decorator, How Does It Work ? Component Design Best Practices
+ContentChild, Directives and HostListener - Implementing the Input Focus Feature
+Implementing The input Focus Functionality - The HostBinding Decorator
 ======================================================================================
+Getting ref to projected content element.
+
+template-component needs a reference to <input> of the
+
+template.component.js
+@ContentChild('input') input: HtmlInputElement; // thanks to the #input reference
+
+or better with an auxiliary directive
+
+to get a reference without the ref input <input #input we need our auxiliary directive
+This chapter shows how to make such an auxiliary directive
+
+How it works
+1. Auxiliary directive knows if the input content projection is in focus.
+2. The :host(.input-focus) is a state class applied to the host if the .input-focus is present in the host
+3. The template will apply the .input-focus class to the host element with the @HostBinding that will ask in turn to the
+Auxiliary directive if its input is in focus.
+
+@ContentChild(InputRefDirective) input: InputRefDirective;
+
+@HostBinding('class.input-focus') // adds the class if the method returns true
+get isInputFocus {
+  return this.input ? this.input.focus : false;
+}
+
+with state class (apply if .input-focus is present)
+:host(.input-focus) {
+  // class added depending on the focus variable
+}
+
+
+Separating Structural Styles From Theme Styles - Making Components Themeable
+======================================================================================
+1.  Structural styles can not be overridden
+2.  Theme styles can be overriden with the :hostContext()
+
+
+template.component.scss
+@import "common.scss" // Structural styles
+@import "default-theme" // default Theme styles
+@import "red-theme.scss"
+
+red-theme.scss
+:hostContext(.theme-red) { // if the host has these theme then apply
+  border-red
+}
+
+1. default Theme styles applied
+  In app.component.html
+  <div class="container">
+  </div>
+
+2. red Theme styles applied
+  In app.component.html
+  <div class="container theme-red">
+  </div>
 
 
 
