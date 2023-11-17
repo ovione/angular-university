@@ -1,1 +1,23 @@
+Angular university
+Course: Angular Advanced Library Laboratory: Build Your Own Library
+--------------------------------------------------------------------
 
+Understanding ng-content and Style Isolation - Learn The Deep Style Modifier
+======================================================================================
+How to style components that are projected into a template from inside the template itself.
+
+app.component.html
+
+<template-component>
+  <input>
+</template-component>
+
+template-component
+--------------------------------------------------
+selector: template-component
+template.component.html
+
+template.component.scss
+host /deep/ input {
+  // this will be applied to the app.component.html input
+}
