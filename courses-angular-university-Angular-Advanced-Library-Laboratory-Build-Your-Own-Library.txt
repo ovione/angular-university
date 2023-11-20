@@ -104,9 +104,9 @@ Explains the other encapsulation, the
 Native shadow dom encapsuation in the chrome browser
 None
 
-
+Review And Publication Of An Angular Library In the Angular Package Format
 ======================================================================================
-
+npm version patch
 
 
 
