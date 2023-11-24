@@ -10,3 +10,29 @@ Angular Advanced Library Laboratory: Build Your Own Library     6 hrs 42 mins
 Angular Material In Depth                                       6 hrs 30 mins
 https://angular-university.io/course/angular-material-course
 ----------------------- 28 hrs 12 mins
+
+Hello Agular University
+
+I write to you to have the certificates for the courses I have just finished.
+This is needed for my work.
+
+Important is to mentioned in my certificates are:
+My name: Ovidio Lairana
+The title, the link to the course, the date that I used to follow the course and the duration of the course.
+
+RxJs In Practice Course
+ https://angular-university.io/course/rxjs-course                                        date: 20 november 2023      duration: 4 hrs 30 mins
+ 
+Reactive Angular Course https://angular-university.io/course/reactive-angular-course                                     date: 21 november 2023      duration: 5 hrs 33 mins
+  
+Angular Testing Course https://angular-university.io/course/angular-testing-course                                           date: 22 november 2023       duration: 5 hrs
+ 
+Angular Advanced Library Laboratory: Build Your Own Library https://angular-university.io/course/angular-advanced-course
+ date: 23 november 2023       duration: 6 hrs 42 mins
+
+Angular Material In Depth https://angular-university.io/course/angular-material-course                                      date: 24 november 2023       duration: 6 hrs 30 mins
+ thanks for he great courses.
+
+PS:
+Do you know when will be new courses available.
+For example I think that the course about "Angular Advanced Library Laboratory: Build Your Own Library" is about 6 years old already.

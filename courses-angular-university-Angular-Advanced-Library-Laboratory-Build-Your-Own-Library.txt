@@ -108,8 +108,9 @@ Review And Publication Of An Angular Library In the Angular Package Format
 ======================================================================================
 npm version patch
 
-
-
+The Tab Container Component - See The Initial Implementation Up And Running VIP
+======================================================================================
+@ContentChildren
 
 
 
